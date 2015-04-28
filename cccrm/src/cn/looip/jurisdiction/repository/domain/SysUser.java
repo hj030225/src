@@ -10,7 +10,17 @@ public class SysUser implements Serializable {
 
 	private String loginName;
 
-	private String loginPwd;
+    private String loginPwd;
+
+    private String userEmail;
+
+    private String userMobile;
+
+    private Integer userId;
+
+    private Short userType;
+
+    private Integer userRoleId;
 
 	public Integer getId() {
 		return id;
@@ -36,5 +46,45 @@ public class SysUser implements Serializable {
 		this.loginPwd = loginPwd;
 	}
 
-	
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserMobile() {
+        return userMobile;
+    }
+
+    public void setUserMobile(String userMobile) {
+        this.userMobile = userMobile;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Short getUserType() {
+        return userType;
+    }
+
+    public void setUserType(Short userType) {
+        this.userType = userType;
+    }
+
+    public Integer getUserRoleId() {
+        return userRoleId;
+    }
+
+    public void setUserRoleId(Integer userRoleId) {
+        this.userRoleId = userRoleId;
+    }
+    
+    
 }

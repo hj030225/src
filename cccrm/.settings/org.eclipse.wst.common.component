@@ -2,7 +2,7 @@
     <wb-module deploy-name="cccrm">
         <wb-resource deploy-path="/" source-path="/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="cccrm"/>
         <property name="java-output-path" value="/cccrm/build/classes"/>
+        <property name="context-root" value="cccrm"/>
     </wb-module>
 </project-modules>

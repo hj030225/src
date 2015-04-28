@@ -1026,3 +1026,21 @@ box-shadow: rgba(187, 187, 187, 1) 0 0px 20px -1px;
 	line-height: 15px;
 	height: 30px;
 }
+
+.div-inline{ 
+display:inline;
+float:left;
+} 
+
+.clearfix {
+}
+
+.clearfix:before, .clearfix:after {
+display: table;
+content: "";
+line-height: 0;
+}
+
+.clearfix:after {
+clear: both;
+}

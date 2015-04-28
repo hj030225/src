@@ -5,22 +5,26 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="http://localhost:8080/cccrm/resources/css/programmeraddsuccess.css" type="text/css"></link>
+<link rel="stylesheet" href="../resources/css/programmeraddsuccess.css"
+	type="text/css"></link>
 
 </head>
 <body>
-<form action="#">
-	<center>
-		<jsp:include page="/WEB-INF/views/layout/head.jsp" />
-			<div class="bottom">
-				<jsp:include page="/WEB-INF/views/layout/left.jsp" />
-				<div class="main">
+	<jsp:include page="/WEB-INF/views/layout/head.jsp" />
+	<jsp:include page="/WEB-INF/views/layout/left.jsp" />
+	<form action="#">
+
+			<div>
 				<div class="success">程序员新增成功!</div>
-				<div><a href="http://localhost:8080/cccrm/test/addprogrammer">继续新增</a></div>
-				<div><a href="http://localhost:8080/cccrm/test/resourcemanage">查看资源管理</a></div>
+				<div>
+					<a href="http://localhost:8080/cccrm/resource/addprogrammer">继续新增</a>
+				</div>
+				<div>
+					<a href="http://localhost:8080/cccrm/resource/resourcemanage">查看资源管理</a>
+				</div>
 			</div>
-			</div>
-	</center>
+		
+
 	</form>
 </body>
 </html>
