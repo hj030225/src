@@ -11,13 +11,18 @@
 </head>
 <body>
 	<div class="left">
-		<div class="zy">
+		<div id="div-zy" class="zy">
 			<div class="text">
 				<a href="http://localhost:8080/cccrm/resource/resourcemanage">资源管理</a>
 			</div>
 		</div>
 
-		<div class="kh">
+		<div id="div-xm" class="xm">
+			<div class="text">
+				<a href="#">项目管理</a>
+			</div>
+		</div>
+		<div id="div-kh" class="kh">
 			<div class="text">
 				<a href="http://localhost:8080/cccrm/resource/customermanage">客户管理</a>
 			</div>

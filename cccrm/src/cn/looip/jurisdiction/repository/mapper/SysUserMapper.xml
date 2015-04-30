@@ -26,8 +26,7 @@
 
 	<select id="selectUserByLogin" resultMap="BaseResultMap"
 		parameterType="java.lang.String">
-		select
-		<include refid="Base_Column_List" />
+		select * 
 		from sys_user
 		where login_name = #{loginName} and login_pwd = #{loginPwd}
 	</select>

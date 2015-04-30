@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -104,12 +107,16 @@ public class ResourceController
 
 	// 查询程序员列表
 	@RequestMapping("resourcemanage")
-	public ModelAndView doResourceManage(Model model)
+	public ModelAndView doResourceManage(Model model,HttpServletRequest request)
 	{
+		HttpSession session = request.getSession(); 
+		SysUser user=(SysUser)session.getAttribute("loginUser");
+		
 		// Map<String,Object> map = new HashMap<String, Object>();
 		List<Programmer> programmers = resourceService.getprogrammers();
 		// List<Manager> programmers=jurisdictionService.getprogrammers();
 		// map.put("programmer", programmer);
+		model.addAttribute("loginUser", user);
 		model.addAttribute("programmers", programmers);
 		model.addAttribute("department", "-1");
 		model.addAttribute("status", "-1");
@@ -120,7 +127,7 @@ public class ResourceController
 
 	// 按条件查询程序员
 	@RequestMapping("programmersearch")
-	public ModelAndView doProgrammerSearch(Model model,
+	public ModelAndView doProgrammerSearch(Model model,			
 			@RequestParam(value = "department") int department,
 			@RequestParam(value = "status") int status)
 	{

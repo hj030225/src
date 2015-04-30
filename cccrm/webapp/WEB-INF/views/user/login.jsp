@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>登录</title>
 <link rel="stylesheet" href="../resources/css/login.css"
 	type="text/css" />
 <!-- <link rel="stylesheet" href="<c:url value="/resources/css/resourcemanage.css" />"
@@ -16,6 +16,7 @@
 	type="text/css" />
 <!-- <link rel="stylesheet" href="resources/css/global_color.css" type="text/css"/> -->
 <script type="text/javascript" src="../resources/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="../resources/js/cookie.min.js"></script>
 <script type="text/javascript" src="../resources/js/login.js"></script>
 </head>
 <body>
@@ -69,9 +70,9 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
-                <div style="margin-top:20px;">
-                    <input id="chk_remember_pwd" type="checkbox" >记住密码</input>
-                    <a id="a_get_pwd" style="cursor:pointer;margin-left:30px;">忘记密码</a>
+                <div style="margin-top:20px; ">
+                    <label style=" font-size:14px;"><input id="chk_remember_pwd" type="checkbox"/>7天内记住账号密码</label>
+                    <a id="a_get_pwd" style="cursor:pointer;margin-left:30px;font-size:14px; color:#00F">忘记密码</a>
                 </div>
                 <div style="margin-top:30px;">
                     <input id="btn_login" type="button" value="确认登录" onClick="login();" />
@@ -86,6 +87,15 @@
         <a style="cursor:pointer; margin-left:30px;">持创研发中心官网</a>
         <a style="cursor:pointer; margin-left:30px;">极客邦官网</a>
     </div>
+    
+    <script type="text/javascript">
+		/*
+		function test(){
+			$.cookie('remember_flag','true',{expires:7});
+
+		}*/
+	
+	</script>
 </body>
 
 </html>

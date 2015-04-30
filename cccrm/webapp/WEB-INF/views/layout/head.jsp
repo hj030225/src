@@ -21,10 +21,9 @@
         	<label>客服热线：400 800 0000</label>
         </div>
 		<div id="div-user" class="control">
-			<img src="../resources/img/manager.png" />管理员<img
-				src="../resources/img/shuxian.png" /><img
-				src="../resources/img/cancel.png" /><a
-				href="#">注销</a>
+			<img src="../resources/img/manager.png" /><label id="lbl-user">管理员</label>
+            <img src="../resources/img/shuxian.png" />
+            <img src="../resources/img/cancel.png" /><a	href="<c:url value="/user/logout" />">注销登录</a>
 		</div>
         
 	</div>

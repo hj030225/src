@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>CRM系统</title>
 <link rel="stylesheet" href="../resources/css/resourcemanage.css"
 	type="text/css" />
 <!-- <link rel="stylesheet" href="<c:url value="/resources/css/resourcemanage.css" />"
@@ -16,11 +16,14 @@
 	type="text/css" />
 <!-- <link rel="stylesheet" href="resources/css/global_color.css" type="text/css"/> -->
 <script type="text/javascript" src="../resources/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="../resources/js/cookie.min.js"></script>
 <script type="text/javascript" src="../resources/js/resourcemanage.js"></script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/layout/head.jsp" />
 	<jsp:include page="/WEB-INF/views/layout/left.jsp" />
+    <input type="hidden" value="${loginUser.loginName}" id="hidden-username"/>
+    <input type="hidden" value="${loginUser.userType}" id="hidden-usertype"/>
 	<form action="programmersearch" method="get" id="programmersearch">
 
 		<!-- toolbar -->

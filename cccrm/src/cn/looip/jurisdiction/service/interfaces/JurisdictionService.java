@@ -13,6 +13,9 @@ public interface JurisdictionService {
 	
 	public boolean checkLogin(String loginName,String loginPwd);
 	
+	//获取登录用户
+	public SysUser getLoginUser(String loginName,String loginPwd);
+	
 	//增加用户
 	public int insertSysUser(SysUser user);
 	

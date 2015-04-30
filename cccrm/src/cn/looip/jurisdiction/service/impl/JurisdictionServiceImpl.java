@@ -1,8 +1,5 @@
 package cn.looip.jurisdiction.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +39,11 @@ public class JurisdictionServiceImpl implements JurisdictionService {
 			isSuccess = true;
 		}
 		return isSuccess;
+	}
+	
+	public SysUser getLoginUser(String loginName,String loginPwd){
+		SysUser sysUser = jurisdictionDAO.selectUserByLogin(loginName,loginPwd);
+		return sysUser;
 	}
 
 	@Override
