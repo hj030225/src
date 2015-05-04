@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.looip.project.repository.dao.ProjectDao">
+	<resultMap id="BaseResultMap" type="cn.looip.project.repository.domain.Project">
+		<id column="Id" property="id" jdbcType="INTEGER" />
+		<result column="pro_name" property="proName" jdbcType="VARCHAR" />
+		<result column="pro_contract_no" property="bargainNo" jdbcType="VARCHAR" />
+		<result column="pro_contract_pic" property="proImage" jdbcType="VARCHAR" />
+		<result column="pro_begin_time" property="starttime" jdbcType="DATE" />
+		<result column="pro_end_time" property="endtime" jdbcType="DATE" />
+		<result column="pro_status" property="status" />
+		<result column="customer_id" property="customer.id" />
+	</resultMap>
+ 
+	<resultMap id="CustomerMap" type="cn.looip.project.repository.domain.Customer">
+		<id column="Id" property="id" jdbcType="INTEGER" />
+		<result column="customer_name" property="name" />
+		<result column="customer_man" property="man" />
+		<result column="customer_sex" property="sex" />
+		<result column="customer_qq" property="qq" />
+		<result column="customer_status" property="status" />
+	</resultMap>
+     <!-- id column不是id,而是关联表外键 -->
+    <resultMap id="ProgrammerMap" type="cn.looip.project.repository.domain.Programmer">
+		<id column="Id" property="id" jdbcType="INTEGER" />
+		<result column="programmer_name" property="programmerName" />
+		<result column="programmer_level" property="level" />
+	</resultMap>
+	   <!-- association级联映射  
+	    -->
+	   <resultMap id="PprojectMap" type="cn.looip.project.repository.domain.ProgrammerProject">
+		<id column="Id" property="id" jdbcType="INTEGER" />
+		<result column="begin_time" property="beginTime" />
+		<result column="end_time" property="endTime" />
+		<collection property="programmer" ofType="cn.looip.project.repository.domain.Programmer">
+		<id column="programmer_id" property="id"  />
+		<result column="programmer_name" property="programmerName" />
+		<result column="programmer_level" property="level" />
+		</collection>  
+	  </resultMap>
+	  
+	  
+	  <resultMap id="LogMap" type="cn.looip.project.repository.domain.Log" >
+	   <result column="cnum" property="cnum" />
+	   <result column="vnum" property="vnum" />
+	  </resultMap>
+     <!-- 
+           collection银映射结果集  一般用于一对多
+	                   例如：返回个private List<Project> projects;
+      <resultMap type="Programmer" id="ProgrammerMaps">
+       <collection property="programmer" ofType="Project"  resultMap="ProgrammerMaps"/>  
+      </resultMap>
+   
+      <resultMap id="ProgrammerMaps" type="Project">
+		<id column="Id" property="id" jdbcType="INTEGER" />
+		<result column="programmer_name" property="programmerName" />
+	  </resultMap>
+      -->
+     
+	<!-- 添加项目 -->
+	<insert id="saveProject" parameterType="cn.looip.project.repository.domain.Project">
+		insert into
+		project(pro_name,pro_contract_no,pro_begin_time,pro_end_time,pro_status,customer_id)
+		values(#{proName},#{bargainNo},#{starttime},#{endtime},#{status},#{customer.id})
+	</insert>
+	<!-- 查询客户 -->
+	<select id="getCustomer" resultMap="CustomerMap">
+		select * from customer
+	</select>
+
+	<!-- 当前项目条数 -->
+	<select id="getNum" resultType="int">
+		select count(*) from project where pro_end_time &gt; curdate()
+	</select>
+	
+	<!-- 历史项目条数 -->
+	<select id="getNums" resultType="int">
+		select count(*) from project where pro_end_time  &lt; curdate()
+	</select>
+	
+	<!-- 模糊项目条数 -->
+	<select id="getNumes" resultType="int">
+		select count(*) from project where pro_name like '%${proName}%' 
+	</select>
+	
+
+	<!-- 分页查询当前项目   
+	 myql获取当前系统日期函数 curdate()
+	 xml转义符 &lt;相当于<     &gt;相当于>号
+	 -->
+	<select id="getProjects" parameterType="int" resultMap="BaseResultMap">
+		select *
+		from project where pro_end_time &gt; curdate() limit #{pagerIndex},#{pagerNum}
+	</select>
+	
+	<!-- 分页查询历史项目 -->
+	<select id="getProjectes" parameterType="int" resultMap="BaseResultMap">
+		select *
+		from project where pro_end_time &lt; curdate() limit #{pagerIndex},#{pagerNum}
+	</select>
+	
+	<!-- 模糊查询项目 -->
+	<select id="getSeach" parameterType="int" resultMap="BaseResultMap">
+		select *
+		from project where pro_name like '%${proName}%'  limit #{pagerIndex},#{pagerNum}
+	</select>
+	
+	<!-- 根据ID查询项目信息 -->
+	<select id="getProject" parameterType="int" resultMap="BaseResultMap">
+		select *
+		from project where  id=#{id}
+	</select>
+	
+    <!-- 修改项目 -->
+	<update id="updateProject" parameterType="cn.looip.project.repository.domain.Project">
+		update project set
+		pro_name=#{proName},pro_contract_no=#{bargainNo},pro_begin_time=#{starttime},pro_end_time=#{endtime},pro_status=#{status},customer_id=#{customer.id}
+		where id=#{id}
+	</update>
+	<!-- 删除项目 -->
+	<delete id="delectProject" parameterType="int">
+	 delete from project where id=#{id}
+	</delete>
+	
+	<!-- 查询闲置的程序员 -->
+	<select id="getProgrammer" parameterType="int" resultMap="ProgrammerMap">
+		select * from programmer where programmer_status='1'
+	</select>
+	<!-- 分配项目 -->
+	<insert id="saveProgrammers" parameterType="cn.looip.project.repository.domain.ProgrammerProject" >
+	 insert into
+		programmer_project(programmer_id,project_id,begin_time,end_time)
+		values(#{programmer.id},#{project.id},#{beginTime},#{endTime})
+	</insert>
+     <!-- status 0为忙碌   1为闲置 -->
+     <update id="updateState" parameterType="int">
+       update programmer set programmer_status='0' where id=#{id}
+     </update>
+     
+     
+     <!-- 
+                   查询项目成员
+                    方法一不用级联：返回resultMap,返回那些参数，在实体类里面定义相关的属性和get/set
+                    方法二用级联：返回resultMap，association级联，坏处是占资源
+      -->
+	<select id="getPproject" parameterType="int" resultMap="PprojectMap">
+		select *
+		from programmer_project pp, programmer p  where pp.programmer_id=p.id and  project_id=#{id} limit #{pagerIndex},#{pagerNum}
+	</select>
+	
+	<select id="getNumber" parameterType="int" resultType="int">
+		select count(*)
+		from programmer_project where project_id=#{id}
+	</select>
+	
+	 <select id="getLogs" parameterType="int" resultMap="LogMap" >
+	     select count(log_content) as cnum,count(log_viod) as vnum from development_log where  project_id=#{0} and programmer_id=#{1}
+	 </select>
+
+</mapper>

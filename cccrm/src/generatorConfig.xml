@@ -41,6 +41,11 @@
 
 		</table>
 
+		<table tableName="project" domainObjectName="Project" 
+			enableCountByExample="false" enableDeleteByExample="false" 
+    			enableSelectByExample="false" enableUpdateByExample="false" >
+    
+    		</table>
 
 	</context>
 </generatorConfiguration>

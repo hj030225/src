@@ -31,12 +31,12 @@ public class ResourceController
 	private JurisdictionService jurisdictionService;
 
 	// 新增程序员
-	@RequestMapping("addprogrammer")
+	@RequestMapping("addProgrammer")
 	public ModelAndView addProgrammer()
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		return new ModelAndView("addprogrammer", map);
+		return new ModelAndView("user/addProgrammer", map);
 	}
 
 	// 查看程序员
@@ -48,7 +48,7 @@ public class ResourceController
 		model.addAttribute("type",1); //查看
 //		Map<String, Object> map = new HashMap<String, Object>();
 
-		return new ModelAndView("addprogrammer");
+		return new ModelAndView("user/addProgrammer");
 	}
 	
 	// 编辑程序员
@@ -61,7 +61,7 @@ public class ResourceController
 		model.addAttribute("id",id); //编辑
 //		Map<String, Object> map = new HashMap<String, Object>();
 
-		return new ModelAndView("addprogrammer");
+		return new ModelAndView("user/addProgrammer");
 	}
 	
 	@RequestMapping("editProgrammerResult")
@@ -71,7 +71,7 @@ public class ResourceController
 		int count=resourceService.updateProgrammer(programmer);
 		int count1=jurisdictionService.updateSysUserByProgrammer(programmer);
 		
-		return "redirect:resourcemanage";
+		return "redirect:resourceManage";
 //		return response.sendredirect("http://www.foo.com/path/error.html");
 //		return doResourceManage(model);
 	}
@@ -102,11 +102,11 @@ public class ResourceController
 		sysuser.setUserType((short)1);//1:程序员
 		int count1=jurisdictionService.insertSysUser(sysuser);
 //		boolean f=jurisdictionService.checkLogin("autumnhu@looip.cn", "123456");
-		return new ModelAndView("programmeraddsuccess");
+		return new ModelAndView("user/programmerAddSuccess");
 	}
 
 	// 查询程序员列表
-	@RequestMapping("resourcemanage")
+	@RequestMapping("resourceManage")
 	public ModelAndView doResourceManage(Model model,HttpServletRequest request)
 	{
 		HttpSession session = request.getSession(); 
@@ -122,11 +122,11 @@ public class ResourceController
 		model.addAttribute("status", "-1");
 		// model.addAttribute("programmer", programmers);
 		// System.out.println(programmer.get(0).getUserMobile());
-		return new ModelAndView("resourcemanage");
+		return new ModelAndView("user/resourceManage");
 	}
 
 	// 按条件查询程序员
-	@RequestMapping("programmersearch")
+	@RequestMapping("programmerSearch")
 	public ModelAndView doProgrammerSearch(Model model,			
 			@RequestParam(value = "department") int department,
 			@RequestParam(value = "status") int status)
@@ -140,7 +140,7 @@ public class ResourceController
 		model.addAttribute("programmers", programmers);
 		model.addAttribute("department", department);
 		model.addAttribute("status", status);
-		return new ModelAndView("resourcemanage");
+		return new ModelAndView("user/resourceManage");
 //		return new ModelAndView("programmersearch");
 	}
 

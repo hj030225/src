@@ -38,7 +38,7 @@ public class UserController
 	@RequestMapping("/login")
 	public ModelAndView doLogin()
 	{
-		return new ModelAndView("login");
+		return new ModelAndView("user/login");
 	}
 	
 	@RequestMapping("/logout")
@@ -71,7 +71,7 @@ public class UserController
 			}
 			HttpSession session = request.getSession(); 
 			session.setAttribute("loginUser", user);
-			return new ModelAndView("redirect:../resource/resourcemanage");
+			return new ModelAndView("redirect:../resource/resourceManage");
 		}
 		else
 		{
@@ -79,7 +79,7 @@ public class UserController
 			model.addAttribute("loginName", loginName);
 			model.addAttribute("loginPwd", loginPwd);
 			model.addAttribute("msg", "用户名/密码错误");
-			return new ModelAndView("login");
+			return new ModelAndView("user/login");
 		}
 
 	}
@@ -107,8 +107,8 @@ public class UserController
 	// }
 	//
 	// // 查询程序员
-	// @RequestMapping("resourcemanage")
-	// public ModelAndView doresourcemanage(Model model)
+	// @RequestMapping("resourceManage")
+	// public ModelAndView doResourceManage(Model model)
 	// {
 	// // Map<String,Object> map = new HashMap<String, Object>();
 	// List<Programmer> programmer = jurisdictionService.getprogrammer();
@@ -117,11 +117,11 @@ public class UserController
 	// model.addAttribute("programmer", programmer);
 	// // model.addAttribute("programmer", programmers);
 	// // System.out.println(programmer.get(0).getUserMobile());
-	// return new ModelAndView("resourcemanage");
+	// return new ModelAndView("resourceManage");
 	// }
 
 	/*
-	 * @RequestMapping(value = "/resourcemanage", method = RequestMethod.GET)
+	 * @RequestMapping(value = "/resourceManage", method = RequestMethod.GET)
 	 * public ModelAndView addProgrammer(HttpServletRequest request) {
 	 * Map<String,Object> map = new HashMap<String, Object>(); String
 	 * beginIndex= request.getParameter("pager.offset"); int pagerNum =
@@ -134,7 +134,7 @@ public class UserController
 	 * System.out.println(count);
 	 * 
 	 * map.put("programmer", programmer); map.put("count", count); return new
-	 * ModelAndView("resourcemanage"); }
+	 * ModelAndView("resourceManage"); }
 	 */
 
 	// 按条件查询程序员
