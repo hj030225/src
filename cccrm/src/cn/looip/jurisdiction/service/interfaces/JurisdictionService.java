@@ -1,5 +1,6 @@
 package cn.looip.jurisdiction.service.interfaces;
 
+import cn.looip.customer.repository.domain.Customer;
 import cn.looip.jurisdiction.repository.domain.SysUser;
 import cn.looip.resource.repository.domain.Programmer;
 
@@ -42,4 +43,10 @@ public interface JurisdictionService {
 //	//总条数
 //	
 //	public int getNum();
+
+	//更新客户
+	public int updateSysUserByCustomer(Customer customer);
+
+	public int insertSysUserByCustomer(SysUser sysUser);
+	
 }

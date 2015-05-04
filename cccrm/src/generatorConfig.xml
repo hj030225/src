@@ -16,15 +16,17 @@
 
 		<javaModelGenerator targetPackage="cn.looip.jurisdiction.repository.domain"
 			targetProject="cccrm" />
+<!-- 
+		<javaModelGenerator targetPackage="cn.looip.customer.repository.domain"
+			targetProject="cccrm" /> -->
 
 		<sqlMapGenerator targetPackage="cn.looip.jurisdiction.repository.mapper"
 			targetProject="cccrm" />
-
+<!-- 
+		<sqlMapGenerator targetPackage="cn.looip.customer.repository.mapper"
+			targetProject="cccrm" /> -->
 		<!-- <javaClientGenerator targetPackage="cn.looip.crm.repository.mapper1" 
 			targetProject="cccrm" type="XMLMAPPER" /> -->
-
-
-
 
 
 		<!-- <table tableName="sys_user" domainObjectName="SysUser" enableCountByExample="false" 
@@ -35,17 +37,24 @@
 			enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			> </table> -->
 
-		<table tableName="sys_user" domainObjectName="Manager"
+		<table tableName="sys_user" domainObjectName="SysUser"
 			enableCountByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" enableUpdateByExample="false">
 
 		</table>
 
-		<table tableName="project" domainObjectName="Project" 
-			enableCountByExample="false" enableDeleteByExample="false" 
-    			enableSelectByExample="false" enableUpdateByExample="false" >
-    
-    		</table>
+		<!-- 客户 -->
+		<table tableName="customer" domainObjectName="Customer"
+			enableCountByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" enableUpdateByExample="false">
+
+		</table>
+
+		<table tableName="project" domainObjectName="Project"
+			enableCountByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" enableUpdateByExample="false">
+
+		</table>
 
 	</context>
 </generatorConfiguration>

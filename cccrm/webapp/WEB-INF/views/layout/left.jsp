@@ -24,7 +24,7 @@
 		</div>
 		<div id="div-kh" class="kh">
 			<div class="text">
-				<a href="http://localhost:8080/cccrm/resource/customerManage">客户管理</a>
+				<a href="http://localhost:8080/cccrm/customer/customerManage">客户管理</a>
 			</div>
 		</div>
 	</div>

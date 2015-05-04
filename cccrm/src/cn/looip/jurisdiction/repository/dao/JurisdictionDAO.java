@@ -23,6 +23,10 @@ public interface JurisdictionDAO {
 
 	//新增用户
 	public int insertSysUser(SysUser user);
+	
+	//新增用户
+	public int insertSysUserByCustomer(SysUser sysUser);
+	
 //	//新增程序员
 //	public int insertProgrammer1(Programmer programmer);
 //	
@@ -42,5 +46,7 @@ public interface JurisdictionDAO {
 
 	//更新程序员
 	public int updateSysUserByProgrammer(SysUser user);
+	//更新客户
+	public int updateSysUserByCustomer(SysUser sysUser);
 }
 

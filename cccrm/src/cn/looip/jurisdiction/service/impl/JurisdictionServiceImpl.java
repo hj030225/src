@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.looip.core.utils.GeneralTools;
+import cn.looip.customer.repository.domain.Customer;
 import cn.looip.jurisdiction.repository.dao.JurisdictionDAO;
 import cn.looip.jurisdiction.repository.domain.SysUser;
 import cn.looip.jurisdiction.service.interfaces.JurisdictionService;
@@ -138,7 +139,21 @@ public class JurisdictionServiceImpl implements JurisdictionService {
 //	}
 
 
-	
+	@Override
+	public int updateSysUserByCustomer(Customer customer) {
+		
+		SysUser sysUser = (SysUser)customer;
+		sysUser.setUserId(customer.getId());
+		sysUser.setUserType((short)2);
+		sysUser.setUserEmail(customer.getLoginName());
+		return jurisdictionDAO.updateSysUserByCustomer(sysUser);
+	}
+
+	@Override
+	public int insertSysUserByCustomer(SysUser sysUser) {
+		// TODO Auto-generated method stub
+		return jurisdictionDAO.insertSysUserByCustomer(sysUser);
+	}
 	
 	}
 

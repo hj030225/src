@@ -72,11 +72,23 @@
 		(#{loginName},#{loginPwd},#{userEmail},#{userMobile},#{userId},#{userType},#{userRoleId});
 	</insert>
 
+	<!-- 新增客户信息 -->
+	<insert id="insertSysUserByCustomer" parameterType="cn.looip.jurisdiction.repository.domain.SysUser">
+	    insert into sys_user(login_name,login_pwd,user_email,user_mobile,user_id,user_type)
+	    values(#{loginName},#{loginPwd},#{userEmail},#{userMobile},#{userId},2);
+	</insert>
+	
 	<!-- 更新程序员 -->
 	<update id="updateSysUserByProgrammer" parameterType="cn.looip.jurisdiction.repository.domain.SysUser">
 		update sys_user set
 		login_name=#{loginName},login_pwd=#{loginPwd},user_email=#{userEmail},user_mobile=#{userMobile},user_role_id=#{userRoleId}
 		where user_id=#{userId} and user_type=#{userType}
+	</update>
+	<!-- 更新客户 -->
+	<update id="updateSysUserByCustomer" parameterType="cn.looip.jurisdiction.repository.domain.SysUser">
+		update sys_user set
+		login_name=#{loginName},login_pwd=#{loginPwd},user_email=#{userEmail},user_mobile=#{userMobile}
+		where user_id=#{userId} and user_type=#{userType};
 	</update>
 
 	<update id="updateByPrimaryKeySelective" parameterType="cn.looip.jurisdiction.repository.domain.SysUser">

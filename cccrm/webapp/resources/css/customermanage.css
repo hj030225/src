@@ -12,10 +12,11 @@ select{width: 100px;height: 30px;text-align: center;}
 .t1{border: 0px solid red;width: 80px;padding: 0px;}
 .t2{border: 0px solid red;width: 70px;padding: 0px;}
 .t3{border: 0px solid red;width: 60px;margin: 0px;}
-.t4{border: 0px solid red;width: 140px;}
+.t4{border: 0px solid red;width: 100px;}
 .t5{border: 0px solid red;width: 100px;}
 .t6{border: 0px solid red;width: 100px;}
-.t7{border: 0px solid red;width: 50px;}
+.t7{border: 0px solid red;width: 70px;}
 .t8{border: 0px solid red;}
 tr{background-color: #F6FAFC;height: 30px;margin: 0px;padding: 0px;}
 table{border: 1px solid #E8E9E8;margin-left: 40px;color: #5A5B5B;margin-top: 0px;}
+#btn_search{margin-top: -20px;margin-left: 100px;width: 50px;height: 20px;}
