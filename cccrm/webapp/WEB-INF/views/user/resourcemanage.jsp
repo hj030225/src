@@ -14,7 +14,7 @@
 	type="text/css" /> -->
 <link rel="stylesheet" href="../resources/css/global.css"
 	type="text/css" />
-<!-- <link rel="stylesheet" href="resources/css/global_color.css" type="text/css"/> -->
+<!-- <link rel="stylesheet" href="../resources/css/global_color.css" type="text/css"/> -->
 <script type="text/javascript" src="../resources/js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="../resources/js/cookie.min.js"></script>
 <script type="text/javascript" src="../resources/js/resourcemanage.js"></script>

@@ -8,8 +8,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="http://localhost:8080/cccrm/resources/css/resourcemanage.css" type="text/css"></link>
-<link type="text/css" rel="stylesheet" media="all" href="resources/css/global.css" />
-<link type="text/css" rel="stylesheet" media="all" href="resources/css/global_color.css" />
+<link type="text/css" rel="stylesheet" media="all" href="../resources/css/global.css" />
+<link type="text/css" rel="stylesheet" media="all" href="../resources/css/global_color.css" />
 <script type="text/javascript" src="http://localhost:8080/cccrm/resources/js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="http://localhost:8080/cccrm/resources/js/resourcemanage.js"></script>
 </head>

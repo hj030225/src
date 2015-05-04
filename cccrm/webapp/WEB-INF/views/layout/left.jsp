@@ -13,7 +13,7 @@
 	<div class="left">
 		<div id="div-zy" class="zy">
 			<div class="text">
-				<a href="http://localhost:8080/cccrm/resource/resourcemanage">资源管理</a>
+				<a href="http://localhost:8080/cccrm/resource/resourceManage">资源管理</a>
 			</div>
 		</div>
 
@@ -24,7 +24,7 @@
 		</div>
 		<div id="div-kh" class="kh">
 			<div class="text">
-				<a href="http://localhost:8080/cccrm/resource/customermanage">客户管理</a>
+				<a href="http://localhost:8080/cccrm/resource/customerManage">客户管理</a>
 			</div>
 		</div>
 	</div>

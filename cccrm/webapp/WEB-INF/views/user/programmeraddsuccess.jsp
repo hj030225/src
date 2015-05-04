@@ -17,10 +17,10 @@
 			<div>
 				<div class="success">程序员新增成功!</div>
 				<div>
-					<a href="http://localhost:8080/cccrm/resource/addprogrammer">继续新增</a>
+					<a href="http://localhost:8080/cccrm/resource/addProgrammer">继续新增</a>
 				</div>
 				<div>
-					<a href="http://localhost:8080/cccrm/resource/resourcemanage">查看资源管理</a>
+					<a href="http://localhost:8080/cccrm/resource/resourceManage">查看资源管理</a>
 				</div>
 			</div>
 		
