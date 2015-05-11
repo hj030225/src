@@ -12,7 +12,6 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class InitList implements ServletContextListener {
     public void contextInitialized(ServletContextEvent event)  {
-    	System.out.println("服务启动");
     	ServletContext application = event.getServletContext();
     	application.setAttribute("path", application.getContextPath());
     }

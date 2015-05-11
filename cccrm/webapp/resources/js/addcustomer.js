@@ -2,16 +2,20 @@
  * javascript
  */
 
-/*
- * 登陆控制脚本
- */
+
+ //登陆控制脚本
+ 
 $(function(){
 	
 	var type=$("#hidden-type").val();
 	
+	
+	//初始化页面的时候让用户名输入框得到焦点
+	$("#loginName").focus();
+	
 	//绑定一个登录事件
 	$("input[name='addcustomer']").click(function(){
-				
+			
 		//登录之前需要验证是否输入
 		var loginName=$.trim($("#loginName").val());
 		if(loginName==""){
@@ -25,12 +29,14 @@ $(function(){
 		}
 		
 		var pwd=$.trim($("#loginPwd").val());
+		//alert("pwd:"+pwd);
 		if(pwd==""){
 			alert("密码不能为空!");
 			$("#loginPwd").focus();
-			return ;
+			return;
 		}
 		var pwd1=$.trim($("#loginPwd1").val());
+		//alert("pwd1:"+pwd1);
 		if(pwd1!=pwd){
 			alert("两次密码输入不一致！");
 			return;
@@ -72,7 +78,16 @@ $(function(){
 		
 	});
 	
-	//初始化页面的时候让用户名输入框得到焦点
-	$("#loginName").focus();
+	
 });
+
+
+
+
+
+
+
+
+
+
 

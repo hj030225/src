@@ -11,20 +11,26 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/layout/head.jsp" />
-	<jsp:include page="/WEB-INF/views/layout/left.jsp" />
-	<form action="#">
 
-			<div>
-				<div class="success">程序员新增成功!</div>
-				<div>
-					<a href="http://localhost:8080/cccrm/resource/addProgrammer">继续新增</a>
-				</div>
-				<div>
-					<a href="http://localhost:8080/cccrm/resource/resourceManage">查看资源管理</a>
-				</div>
+	<div id="main">
+		<div id="mains">
+			<div id="contents">
+				<jsp:include page="/WEB-INF/views/layout/sysmenua.jsp" />
 			</div>
-		
+			<form action="#">
+				<div>
+					<div class="success">程序员新增成功!</div>
+					<div>
+						<a href="http://localhost:8080/cccrm/resource/addProgrammer">继续新增</a>
+					</div>
+					<div>
+						<a href="http://localhost:8080/cccrm/resource/resourceManage">查看资源管理</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 
-	</form>
+
 </body>
 </html>

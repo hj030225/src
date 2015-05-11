@@ -41,13 +41,18 @@
 		parameterType="map">
 		select programmer.*,sys_user.* from programmer
 		left join sys_user on programmer.id = sys_user.user_id 
-		where programmer.id = #{id};
+		where sys_user.user_type = 1 and programmer.id = #{id};
 	</select>
 
 	<!-- 查询程序员list -->
 	<select id="getprogrammers" resultMap="ProgrammerMap"
 		parameterType="map">
 		select programmer.*,sys_user.* from programmer
+		inner join sys_user
+		on programmer.id = sys_user.user_id where sys_user.user_type = 1 limit #{0},#{1};
+	</select>
+	<select id="count" resultType="int">
+	select count(*) from programmer
 		inner join sys_user
 		on programmer.id = sys_user.user_id where sys_user.user_type = 1;
 	</select>

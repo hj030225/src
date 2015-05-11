@@ -4,8 +4,8 @@
  */
 
 function addResouce(){
-	//alert("addResouce");
-	window.location='http://localhost:8080/cccrm/resource/addprogrammer';
+//	alert("addResouce");
+	window.location='http://localhost:8080/cccrm/resource/addProgrammer';
 	//document.location.href='http://www.baidu.com';
 	//window.open('http://www.baidu.com','_self')
 }

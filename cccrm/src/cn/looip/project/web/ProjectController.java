@@ -1,22 +1,43 @@
 package cn.looip.project.web;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import cn.looip.core.utils.SerialNo;
+import cn.looip.jurisdiction.repository.domain.SysUser;
 import cn.looip.project.repository.domain.Customer;
 import cn.looip.project.repository.domain.Programmer;
 import cn.looip.project.repository.domain.ProgrammerProject;
@@ -57,13 +78,12 @@ public class ProjectController {
 	 * @return 添加页面
 	 */
 	@RequestMapping(value = "/addPro", method = RequestMethod.GET)
-	public String addProject(Model model) {
+	public String addProject(Model model,HttpSession session) {
+		session.setAttribute("mark", "project");
 		List<Customer> customer = proservice.getCustomer();
-
-		// for(int i=0;i<customer.size();i++){
-		// System.out.println(customer.get(i).getName());
-		// }
+		long i=  proservice.getFinalid();
 		model.addAttribute("customer", customer);
+		model.addAttribute("serialNo", SerialNo.serialNo(i));
 		return "/project/AddProject";
 	}
 
@@ -91,9 +111,8 @@ public class ProjectController {
 	 */
 	@RequestMapping("/addPros")
 	public String addPros(Project projec) {
-		// System.out.println(projec.getCustomer().getId());
 		proservice.saveProject(projec);
-		return "redirect:/PM";
+		return "redirect:/project/projectManage";
 
 	}
 
@@ -106,21 +125,72 @@ public class ProjectController {
 	 * @throws UnsupportedEncodingException
 	 */
 	@RequestMapping(value = "/projectManage", method = RequestMethod.GET)
-	public String projectManage(Model model, HttpServletRequest request) {
-		String beginIndex = request.getParameter("pager.offset");
-		int pagerNum = Integer.parseInt(request.getServletContext()
-				.getInitParameter("pagerNum"));
-
-		int count = proservice.getNum();
-		List<Project> projects = proservice.getProjects(beginIndex, pagerNum);
-		// for(int i=0;i<projects.size();i++){
-		// System.out.println(projects.get(i).getProName());
-		// }
-		// System.out.println(count);
-		model.addAttribute("projects", projects);
-		model.addAttribute("count", count);
-		model.addAttribute("new1", "new1");
-		return "project/projectManage";
+	public String projectManage(Model model, HttpServletRequest request,HttpSession session,String mark) {
+	    /*
+		 * 修改已过期的项目状态
+		 */
+		proservice.updateStatus();
+		proservice.updateProjectStates();
+		List<ProgrammerProject> Pgprojecr=proservice.endTimeprogrammer(); 
+		if(Pgprojecr!=null){
+			 for (int i = 0; i < Pgprojecr.size(); i++) {
+				 int id=Pgprojecr.get(i).getProgrammer().getId();			 
+				 Integer ids=proservice.getProgrammerID(id);
+			      if(ids!=null){
+			    	 proservice.updatePprogrammerState(ids);
+			      }
+			 }
+		}
+		if(mark!=null){
+			session.setAttribute("mark", mark);
+		}else{
+			session.setAttribute("mark", "project");
+		}
+		SysUser user=(SysUser) session.getAttribute("loginUser");
+		int type=user.getUserType();
+			String beginIndex = request.getParameter("pager.offset");
+			int pagerNum = Integer.parseInt(request.getServletContext()
+					.getInitParameter("pagerNum"));
+		  if(type==0){
+				/*
+				 * 管理员登录
+			     */
+            String Name=user.getLoginName();
+            session.setAttribute("nickname", Name);
+			int count = proservice.getNum();
+			List<Project> projects = proservice.getProjects(beginIndex, pagerNum);
+			model.addAttribute("projects", projects);
+			model.addAttribute("count", count);
+			model.addAttribute("new1", "new1");
+			return "project/projectManage";
+		}else if(type==1){
+			/*
+			 * 程序员登录后
+			*/
+			int pgid=user.getUserId();//程序员ID
+			 String Name=proservice.getprogrammerName(pgid);
+	            session.setAttribute("nickname", Name);
+			List<ProgrammerProject> Pprojects = proservice.getPprojects(beginIndex,
+					pagerNum, pgid); // 程序员项目信息
+			int count = proservice.getNumberes(pgid);
+			model.addAttribute("Pprojects", Pprojects);
+			Calendar c = Calendar.getInstance();
+			Date date=c.getTime();
+			model.addAttribute("date", date);
+			model.addAttribute("count", count);
+			return "/project/PMs";
+		}else{
+			     /*客户登录后跳转*/
+			    //根据用户session编号查出，客户ID
+				int cid=user.getUserId();//客户ID
+				String Name=proservice.getcustomerName(cid);
+				session.setAttribute("nickname", Name);
+				int count = proservice.getNumbers(cid);
+				List<Project> projects = proservice.getCProject(beginIndex, pagerNum,cid);
+				model.addAttribute("projects", projects);
+				model.addAttribute("count", count);
+				return "/project/projectManage";	
+		}
 	}
 
 	/**
@@ -168,7 +238,7 @@ public class ProjectController {
 	@RequestMapping("/updatePros")
 	public String updatePros(Project projec) {
 		proservice.updateProject(projec);
-		return "redirect:/PM";// 重定向跳转到另一个方法
+		return "redirect:/project/projectManage";// 重定向跳转到另一个方法
 
 	}
 
@@ -180,8 +250,17 @@ public class ProjectController {
 	 */
 	@RequestMapping(value = "/delectPros", method = RequestMethod.GET)
 	public String delectPros(int id) {
-		proservice.delectProject(id);
-		return "redirect:/PM";// 重定向跳转到另一个方法
+		System.out.println(proservice.getPprogramm(id));
+		
+		  if(proservice.getPprogramm(id)!=null){
+			  
+			  int ppid=proservice.getPprojectID(id);
+			  proservice.deletePprogrammer(ppid);
+		  }
+		  proservice.delectProject(id);
+		
+		
+		return "redirect:/project/projectManage";// 重定向跳转到另一个方法
 
 	}
 
@@ -202,7 +281,7 @@ public class ProjectController {
 		model.addAttribute("projects", projects);
 		model.addAttribute("count", count);
 		model.addAttribute("seach", "seach");
-		return "/project/PM";
+		return "/project/projectManage";
 	}
 
 	/**
@@ -212,7 +291,8 @@ public class ProjectController {
 	 * @return
 	 */
 	@RequestMapping(value = "/ProjectInfo", method = RequestMethod.GET)
-	public String ProjectInfo(int id, Model model, HttpServletRequest request) {
+	public String ProjectInfo(int id, Model model, HttpSession session,HttpServletRequest request) {
+		SysUser user=(SysUser) session.getAttribute("loginUser");
 		String beginIndex = request.getParameter("pager.offset");
 		int pagerNum = Integer.parseInt(request.getServletContext()
 				.getInitParameter("pagerNums"));
@@ -221,34 +301,40 @@ public class ProjectController {
 		List<ProgrammerProject> Pprojects = proservice.getPproject(beginIndex,
 				pagerNum, id); // 项目程序员信息
 		int count = proservice.getNumber(id);// 条数
-		 
-		 for (int i = 0; i < Pprojects.size(); i++) {
-		    String Name=Pprojects.get(i).getProgrammer().getProgrammerName();
-		  
-		    System.out.println(Name+"--"+ Pprojects.get(i).getProgrammer().getId()+"--"+Pprojects.get(i).getId());
-
-		 }
-
+		String imgnum=proservice.imgNumber(id);//图片字符
+		String[] strarray=null;
+		int imgnums=0;
+		if(imgnum!=null){
+			strarray= imgnum.split("\\*"); //把每个图片字符串按*分隔
+			imgnums=strarray.length;//图片个数
+		}
+		Calendar c = Calendar.getInstance();
+		Date date=c.getTime();
 		model.addAttribute("project", project);
 		model.addAttribute("count", count);
 		model.addAttribute("Pprojects", Pprojects);
+		model.addAttribute("id", id);
+		model.addAttribute("date", date);
+		model.addAttribute("imgnums", imgnums);
+		if(user.getUserType()==2){
+		  return "/project/ProjectInfoes";
+		}
 		return "/project/ProjectInfo";
 
 	}
 
 	/**
-	 * 
+	 * 显示可被添加的项目人员
 	 * @param id    项目ID
 	 * @param model 人员集合
 	 * @return 项目分配人员
 	 */
-	@RequestMapping(value = "/AddProgrammer", method = RequestMethod.GET)
-	public String AddProgrammer(int id, Model model) {
+	@RequestMapping(value = "/addProgrammer", method = RequestMethod.GET)
+	public String addProgrammer(int id, Model model) {
 		/*  待开发
 		 * 1查询所有结束工作的人员
 		 * 2根据人员ID查询最后一个项目结束时间与系统时间比较
 		 * 3最后时间确实结束则修改状态为‘闲置’
-		 * 4、增加手动修改状态功能，同时删除参与项目的人员信息
 		 */
 		
 		
@@ -273,60 +359,177 @@ public class ProjectController {
 	}
 
 	/**
-	 * 
+	 * 添加项目人员
 	 * @param Pprojec程序员项目类
 	 * @return
 	 */
-	@RequestMapping("/AddProgrammers")
-	public String AddProgrammers(ProgrammerProject Pprojec) {
+	@RequestMapping("/addProgrammers")
+	public String addProgrammers(ProgrammerProject Pprojec,int status) {
 		/*
 		 * 添加
 		 */
 		proservice.saveProgrammers(Pprojec);
+		int State=Pprojec.getProgrammer().getProgrammerStatus();
 		/*
-		 * 修改状态为0 忙碌
+		 * 修改项目状态
 		 */
-		proservice.updateState(Pprojec.getProgrammer().getId());
+		int projectState=status;
+		proservice.updateProjectState(Pprojec.getProject().getId(),projectState);
+		/*
+		 * 修改程序员状态
+		 */
+		
+		proservice.updateState(Pprojec.getProgrammer().getId(),State);
+		
 		/*
 		 * 传递项目ID返回
 		 */
-		return "redirect:/AddProgrammer?id=" + Pprojec.getProject().getId()
+		return "redirect:/project/addProgrammer?id=" + Pprojec.getProject().getId()
 				+ "";
 
 	}
 	
-	
 	/**
-	 * 程序员登录后的项目信息
-	 * @param model
-	 * @param request
-	 * @param session 登录人
+	 * 踢出程序员
+	 * @param id 程序员项目ID
+	 * @param State  程序员状态
+	 * @param pgid 程序员ID
+	 * @param pid  项目ID
 	 * @return
 	 */
+	@RequestMapping("/deleteProgrammers")
+	public String deleteProgrammers(ProgrammerProject Pprojec) {
+		int id=Pprojec.getId();
+		int pgid=Pprojec.getProgrammer().getId();
+		int pid=Pprojec.getProject().getId();
+		short Status= Pprojec.getProgrammer().getProgrammerStatus();  
+	    proservice.deletePprogrammer(id);
+	    
+	    if( proservice.getPprogrammer(id)==null){
+	       proservice.updateState(pgid,Status);
+	       if(proservice.getPprogramm(pid)==null){
+	    	   proservice.updateProjectState(pid,3);
+	       }
+	    }
+	  
+		return "redirect:/project/ProjectInfo?id=" + pid
+				+ "";
+	}
 	
-	@RequestMapping(value = "/ProM", method = RequestMethod.GET)
-	public String addProM(Model model, HttpServletRequest request,HttpSession session) {
+	/**
+	 * 申请续约
+	 * @param Pproject
+	 * @return
+	 */
+	@RequestMapping("/getExtensionTime")
+	public String  getExtensionTime(ProgrammerProject Pproject,String details){
+		proservice.updateExtension(Pproject);
+		return "redirect:/project/ProjectInfo?id="+Pproject.getProject().getId()+"&details="+details+"";
 		
-		/**
-		 * 后续添加登录人session等验证，目前当程序员已登录
-		 */
-		
-		
+	}
+	
+	/**
+	 * 续约记录
+	 * @param Pproject
+	 * @return
+	 */
+	@RequestMapping(value = "/getExtensionInfo", method = RequestMethod.GET)
+	public String  getExtensionInfo(Model model, HttpServletRequest request,HttpSession session){
+		session.setAttribute("mark", "project");
 		String beginIndex = request.getParameter("pager.offset");
 		int pagerNum = Integer.parseInt(request.getServletContext()
 				.getInitParameter("pagerNum"));
-
-		int count = proservice.getNum();
-		List<Project> projects = proservice.getProjects(beginIndex, pagerNum);
-		// for(int i=0;i<projects.size();i++){
-		// System.out.println(projects.get(i).getProName());
-		// }
-		// System.out.println(count);
-		model.addAttribute("projects", projects);
+		
+		List<ProgrammerProject> ProjectRecord=proservice.getRecord(beginIndex,pagerNum);
+		int count =proservice.getRecordCount();
 		model.addAttribute("count", count);
-		model.addAttribute("new1", "new1");
-		return "/project/PMs";
+		model.addAttribute("ProjectRecord", ProjectRecord);
+		model.addAttribute("date", new Date());
+		return "/project/ExtensionInfo";
+		
 	}
+	/**
+	 * 同意续约
+	 * @param id 项目续约的ID
+	 * @param extensionTime续约的天数
+	 * @param RemainingTime剩余的天数
+	 * @return
+	 */
+	@RequestMapping(value = "/updateRecord", method = RequestMethod.GET)
+	public String updateRecord(int id,int extensionTime,int RemainingTime,Date timeRecord){
+		proservice.updateContract(id, extensionTime, RemainingTime,timeRecord);
+		return "redirect:/project/getExtensionInfo";
+		
+	}
+	
+	
+	@RequestMapping("/upload") 
+	public String addFile(HttpServletRequest request,HttpServletResponse response,String FileName, int id) throws IllegalStateException, IOException{
+		//创建一个通用的多部分解析器  
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());  
+        //判断 request 是否有文件上传,即多部分请求  
+        if(multipartResolver.isMultipart(request)){  
+            //转换成多部分request    
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;  
+            //取得request中的所有文件名  
+            Iterator<String> iter = multiRequest.getFileNames();  
+            while(iter.hasNext()){  
+                //记录上传过程起始时的时间，用来计算上传时间  
+                int pre = (int) System.currentTimeMillis();  
+                //取得上传文件  
+                MultipartFile file = multiRequest.getFile(iter.next());  
+                if(file != null){  
+                    //取得当前上传文件的文件名称  
+                    String myFileName = file.getOriginalFilename();  
+                    //如果名称不为“”,说明该文件存在，否则说明该文件不存在  
+                    if(myFileName.trim() !=""){  
+                       // System.out.println(myFileName);  
+                        //重命名上传后的文件名 (原文件名+上传时间)
+                        String fileName =file.getOriginalFilename();
+                        String fileExt = fileName.substring(
+    							fileName.lastIndexOf(".") + 1).toLowerCase();
+                        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+    					String newFileName = df.format(new Date());
+                        String fileNames=newFileName+pre+"."+fileExt;
+                        //定义上传路径  
+                        //String path = "F:/" + fileNames; 
+                        String path=request.getSession().getServletContext().getRealPath("/resources/contractImgs") + "/" +  fileNames;
+                        File localFile = new File(path); 
+                        if(!localFile.exists()){//如果文件夹不存在，自动创建
+                        	localFile.mkdirs();
+                           }
+                        file.transferTo(localFile); 
+                        //组成一个字符
+                        if(FileName!=null){
+                        	FileName=FileName+fileNames+"*";
+                        }
+                        else{
+                        	FileName=fileNames+"*";
+                        	 
+                        }
+                    }  
+                }  
+                //记录上传该文件后的时间  
+//                int finaltime = (int) System.currentTimeMillis();  
+//                System.out.println(finaltime - pre);
+               
+            }  
+            proservice.saveFiles(id,FileName);
+        }  
+
+		  return "redirect:/project/ProjectInfo?id=" + id
+					+ "";
+	 }	
+	
+/*************************客户项目模块结束*****************************/
+	@RequestMapping("/logout")
+	public String logout( HttpSession session){
+		session.removeAttribute("nickname");
+		session.removeAttribute("loginUser");
+		return "redirect:/user/login";
+		
+	}
+
 	
 	
 

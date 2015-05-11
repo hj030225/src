@@ -20,7 +20,7 @@ public interface ResourceDAO {
 //	public int insertProgrammer2(Manager manager);
 	
 	//程序员集合
-	public List<Programmer> getprogrammers();
+	public List<Programmer> getprogrammers(int pagerIndex,int pagerNum);
 	
 	//按条件查询程序员
 	public List<Programmer> searchprogrammer(@Param("department") int department,@Param("status") int status);
@@ -36,5 +36,9 @@ public interface ResourceDAO {
 
 	//更新程序员
 	public int updateProgrammer(Programmer programmer);
+	/*
+	 *程序员集合总条数
+	 */
+	public int count();
 }
 

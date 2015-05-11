@@ -6,93 +6,37 @@
 <html>
 <head>
 <title>管理员信息</title>
-<link type="text/css" rel="stylesheet" media="all"
-	href="../resources/css/global.css" />
-<link type="text/css" rel="stylesheet" media="all"
-	href="../resources/css/global_color.css" />
+<link type="text/css" rel="stylesheet" media="all"href="../resources/css/global.css" />
+<link type="text/css" rel="stylesheet" media="all" href="../resources/css/global_color.css" />
 <script src="${path}/resources/laydate/laydate.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="${path}/resources/static/css/ui2.css?2013032917">
+<link rel="stylesheet" type="text/css" href="${path}/resources/static/css/ui2.css?2013032917">
 <script type="text/javascript">
-	$(function() {
-		$(".backc2").mouseover(function() {
-			$(this).animate({
-				marginTop : "5px"
-			}, 200);
-		});
-		$(".backc2").mouseleave(function() {
-			$(this).animate({
-				marginTop : "10px"
-			}, 200);
-		});
-
-		$(".backc3").mouseover(function() {
-			$(this).animate({
-				marginTop : "5px"
-			}, 200);
-			$(this).animate({
-				marginTop : "10px"
-			}, 200);
-		});
-
-		$(".backc4").mouseover(function() {
-			$(this).fadeTo(300, 0.3);
-		});
-		$(".backc4").mouseleave(function() {
-			$(this).fadeTo(300, 1);
-		});
-
-		$(".backc5").mouseover(function() {
-			$(this).fadeTo(400, 0.3);
-			$(this).fadeTo(400, 1);
-		});
-
-		$(".backc6").mouseover(function() {
-			$(this).addClass("divradius").fadeTo(300, 0.3);
-		});
-		$(".backc6").mouseleave(function() {
-			$(this).removeClass("divradius").fadeTo(300, 1);
-		});
-	});
-	function over() {
-		document.getElementById('a').style.background = "#fff";
-		document.getElementById('a').style.color = "#697d84";
-	}
-
-	function overes() {
-		document.getElementById('a').style.background = "#3CB371";
-		document.getElementById('a').style.color = "#fff";
-	}
+function over() {
+	$("#first").css({"background":"#fff","color":"#697d84"});
+}
+function overes() {
+	$("#first").css({"background":"#3CB371","color":"#fff"}); 
+}
 </script>
 </head>
 <body>
 	<!--Logo区域开始-->
 	<div id="header">
-		<img src="../resources/img/logo.png" alt="logo" /> <a href="#">注销</a>
-
+		<img src="../resources/img/logo.png" class="imglogo" alt="logo" />
+	    <div>
+		<img  class="headerimg" src="../resources/img/manager.png"> 
+		<a>${sessionScope.nickname}</a>
+		<img  class="headerimg" src="../resources/img/cancel.png"> 
+		<a href="${path}/project/logout">注销</a>
+       </div>
 	</div>
 
 	<!--主要区域开始-->
 	<div id="main">
 		<div id="mains">
 			<div id="contents">
-				<div class="sysmenua" onMouseOut="overes()">
-					<ul>
-						<li><a id="a" class="current" href="javascript:void(0);">项目管理</a></li>
-						<li><a href="javascript:void(0);" onmouseover="over()">客户管理</a></li>
-						<li><a href="javascript:void(0);" onmouseover="over()">程序员管理</a></li>
-						<li><a href="javascript:void(0);" onmouseover="over()">系统管理</a></li>
-					</ul>
-				</div>
-				<div class="bottom">
-					<img src="../resources/img/video.png" class="imgs"> <a
-						href="#">视频会议</a> <img src="../resources/img/phone.png"
-						class="imges"> <a href="#">在线客服</a>
-
-				</div>
+			<jsp:include page="/WEB-INF/views/layout/sysmenua.jsp" />
 			</div>
-
-
 			<div id="record">
 				<div id="subfield">分栏</div>
 				<div class="tables">
@@ -122,20 +66,22 @@
 							varStatus="index">
 							<!-- 控制随机样式 list backc+数字-->
 							<%int number =(int)(Math.random()*11+1);%>
-							<c:set var="a" value="<%=number%>" />
+							<c:set var="randomnum" value="<%=number%>" />
 							<!-- 控制跳转到的DIV #signup-modal+循环数-->
 							<div class="bll">	
 							<a data-toggle="modal"  href="#signup-modal${index.count}">
-							<div class="list backc${a}" >${programmer.programmerName}</div>
+							<div class="list backc${randomnum}" >${programmer.programmerName}</div>
 							</a>
 							</div>
 
 							<div class="modal in" id="signup-modal${index.count}">
 								<a class="close" data-dismiss="modal">×</a>
 								<h1>设置工作时间</h1>
-								<form class="signup-form clearfix" method="post" action="${path}/AddProgrammers">
+								<form class="signup-form clearfix" method="post" action="${path}/project/addProgrammers">
 								        <input type="hidden" name="project.id" value="${project.id}">
+								        <input type="hidden" name="status" value="${project.status}">
 								        <input type="hidden" name="programmer.id" value="${programmer.id}">
+								        <input type="hidden" name="programmer.programmerStatus" value="${programmer.programmerStatus}">
 									    <input type="text"  readonly="readonly" onFocus="this.blur()" value="${programmer.programmerName}"> 
 										<input name="beginTime" type="text" placeholder="开始时间：" onclick="laydate()" > 
 										<input name="endTime" type="text" placeholder="结束时间：" onclick="laydate()" > 

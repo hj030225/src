@@ -21,7 +21,9 @@ public interface ResourceService {
 	public Programmer getProgrammer(int id);
 		
 	//查询程序员list
-	public List<Programmer> getprogrammers();
+	public List<Programmer> getprogrammers(String pagerIndex,int pagerNum);
+	
+	public int count();
 	
 	//按条件查询程序员
 	public List<Programmer> searchprogrammer(int department,int status);

@@ -48,7 +48,7 @@
 	<select id="getCustomer" resultMap="CustomerMap" parameterType="map">
 	select customer.*,sys_user.* from customer
   	left join sys_user on customer.id = sys_user.user_id 
-  	where customer.id = #{id}
+  	where sys_user.user_type = 2 and customer.id = #{id}
   
 	</select>
   

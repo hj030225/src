@@ -14,7 +14,7 @@
 	<center>
 		<jsp:include page="/WEB-INF/views/layout/head.jsp" />
 			<div class="bottom">
-				<jsp:include page="/WEB-INF/views/layout/left.jsp" />
+				<jsp:include page="/WEB-INF/views/layout/sysmenua.jsp" />
 				<div class="main">
 					<div class="one">登录名</div><div class="two"><input type="text" name="loginname" id="loginname"></div><br/>
 					<div class="one">密&nbsp;&nbsp;码</div><div class="two"><input type="password" name="loginpwd" id="loginpwd"></div><br/>

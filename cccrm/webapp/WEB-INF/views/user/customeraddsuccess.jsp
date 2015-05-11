@@ -5,22 +5,29 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="../resources/css/programmeraddsuccess.css" type="text/css"></link>
 
 </head>
 <body>
-<form action="#">
-	<center>
-		<jsp:include page="/WEB-INF/views/layout/head.jsp" />
-			<div class="bottom">
-				<jsp:include page="/WEB-INF/views/layout/left.jsp" />
-				<div class="main">
-				<div class="success">客户新增成功!</div>
-				<div><a href="addcustomer">继续新增</a></div>
-				<div><a href="customermanage">查看客户管理</a></div>
+	<jsp:include page="/WEB-INF/views/layout/head.jsp" />
+
+	<div id="main">
+		<div id="mains">
+			<div id="contents">
+				<jsp:include page="/WEB-INF/views/layout/sysmenua.jsp" />
 			</div>
-			</div>
-	</center>
-	</form>
+			<form action="#">
+				<center>
+
+					<div class="success">客户新增成功!</div>
+					<div>
+						<a href="addcustomer">继续新增</a>
+					</div>
+					<div>
+						<a href="customermanage">查看客户管理</a>
+					</div>
+				</center>
+			</form>
+		</div>
+	</div>
 </body>
 </html>

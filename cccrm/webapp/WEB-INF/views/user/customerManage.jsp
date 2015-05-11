@@ -1,68 +1,94 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib prefix="pg" uri="http://jsptags.com/tags/navigation/pager"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="../resources/css/customermanage.css" type="text/css"></link>
-<script type="text/javascript" src="../resources/js/jquery-1.8.2.min.js"></script>
+<title>客户管理</title>
+<link type="text/css" rel="stylesheet" media="all"
+	href="../resources/css/global.css" />
+<link type="text/css" rel="stylesheet" media="all"
+	href="../resources/css/global_color.css" />
 <script type="text/javascript" src="../resources/js/customermanage.js"></script>
 </head>
 <body>
-<form action="searchcustomer" method="get" id="customermanage">
-	<center>
-		<jsp:include page="/WEB-INF/views/layout/head.jsp" />
-			<div class="bottom">
-				<jsp:include page="/WEB-INF/views/layout/left.jsp" />
-				
-				
-				<div class="main">
-				<div class="zt">
-					<select name="status" id="sel_status">	
+	<!--Logo区域开始-->
+	<div id="header">
+		<img src="../resources/img/logo.png" class="imglogo" alt="logo" />
+		<div>
+			<img class="headerimg" src="../resources/img/manager.png"> <a>${sessionScope.nickname}</a>
+			<img class="headerimg" src="../resources/img/cancel.png"> <a
+				href="${path}/project/logout">注销</a>
+		</div>
+	</div>
+   <form action="searchcustomer" method="get" id="customermanage">
+	<!--主要区域开始-->
+	<div id="main">
+		<div id="mains">
+			<div id="contents">
+				<jsp:include page="/WEB-INF/views/layout/sysmenua.jsp" />
+			</div>
+
+			<div id="record">
+
+				<div id="subfield"></div>
+				<div class="search_add">
+				<div class="left">
+					<select name="status" id="sel_status" style="margin-left: 30px;">	
 					<option value="-1">全部</option>
 					<option value="0">空闲</option>
 					<option value="1">项目中</option>
 					</select>
 					<input type="hidden" value="${status}" id="hidden-status"/>
-					<div class="sousuo"><button id="btn_search" >搜索</button></div>
+					<button id="btn_search"  class="find">搜索</button>
 				</div>
+					<div class="rights">
 				
-				
-				<div class="xz"><a href="addCustomer">新增资源</a></div>
-				<table width="700px">
-					<tr class="t0"><th class="t1">公司名称</th><th class="t2">联系人</th><th class="t3">性别</th><th class="t4">邮箱</th><th class="t5">手机</th><th class="t6">QQ</th><th class="t7">状态</th><th class="t8">操作</th></tr>
-					<c:forEach var="customer" items="${customers}">
-					<tr><th>${customer.customerName}</th>
-						<th>${customer.customerMan}</th>
-						<th>
+					 <a href="addCustomer">新增资源</a>
+					</div>
+				</div>
+				<!--数据区域：用表格展示数据-->
+					<div id="data">
+					<table id="datalist">
+						<tr id="tres">
+							<th >公司名称</th>
+							<th >联系人</th>
+							<th >性别</th>
+							<th >邮箱</th>
+							<th >手机</th>
+							<th >QQ</th>
+							<th >状&nbsp;&nbsp;态</th>
+							<th >操&nbsp;作</th>
+						</tr>
+						<c:forEach var="customer" items="${customers}">
+					<tr id="tres"><td>${customer.customerName}</td>
+						<td>${customer.customerMan}</td>
+						<td>
 							<c:choose>
 									  <c:when test="${customer.customerSex == 0}">男</c:when>
 								  	  <c:when test="${customer.customerSex == 1}">女</c:when>
 						    </c:choose>
-						</th>
-						<th>${customer.userEmail}</th>
-						<th>${customer.userMobile}</th>
-						<th>${customer.customerQq}</th>
-						<th>
+						</td>
+						<td>${customer.userEmail}</td>
+						<td>${customer.userMobile}</td>
+						<td>${customer.customerQq}</td>
+						<td>
 							<c:choose>
 									  <c:when test="${customer.customerStatus == 0}">空闲</c:when>
 								  	  <c:when test="${customer.customerStatus == 1}">项目中</c:when>
 						    </c:choose>
-						</th>
-						<th><a onclick=""  href="<c:url value="/customer/viewCustomer?id=${customer.id}" />">查看</a>
-							<a onclick=""  href="<c:url value="/customer/editCustomer?id=${customer.id}" />">编辑</a>
-						</th>
+						</td>
+						<td><a onclick="" class="btn_delete"  href="<c:url value="/customer/viewCustomer?id=${customer.id}" />">查看</a>
+							<a onclick=""  class="btn_delete" href="<c:url value="/customer/editCustomer?id=${customer.id}" />">编辑</a>
+						</td>
 						</tr>
 						
 					</c:forEach>
-				</table>
-			</div>
-			</div>
-			
-			<!--分页-->
+					</table>
+
+				</div>
+				
 				<div id="pages">
 				
 				 	<c:if test="${allcustomers == 'allcustomers'}">
@@ -105,8 +131,9 @@
 					</pg:pager>
 				</div>
 			
-			
-	</center>
+			</div>
+		</div>
+	</div>
 	</form>
 </body>
 </html>

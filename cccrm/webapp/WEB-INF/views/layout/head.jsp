@@ -8,24 +8,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>苏州持创crm系统</title>
-<link rel="stylesheet" href="../resources/css/head.css"
-	type="text/css"></link>
-<script type="text/javascript" src="../resources/js/global.js"></script>
+<link type="text/css" rel="stylesheet" media="all"
+	href="${path }/resources/css/global.css" />
+<link type="text/css" rel="stylesheet" media="all"
+	href="${path}/resources/css/global_color.css" />
+<script type="text/javascript" src="${path}/resources/js/global.js"></script>
 </head>
 <body>
-	<div class="head">
-		<div class="logo">
-			<img src="../resources/img/logo.png" />
+	<!--Logo区域开始-->
+	<div id="header">
+		<img src="${path}/resources/img/logo.png" class="imglogo" alt="logo" />
+		<c:if test="${sessionScope.nickname!=null}">
+		<div>
+			<img class="headerimg" src="../resources/img/manager.png"> <a>${sessionScope.nickname}</a>
+			<img class="headerimg" src="../resources/img/cancel.png"> <a
+				href="${path}/project/logout">注销</a>
 		</div>
-        <div id="div-tel" class="control" style="display:none;">
-        	<label>客服热线：400 800 0000</label>
-        </div>
-		<div id="div-user" class="control">
-			<img src="../resources/img/manager.png" /><label id="lbl-user">管理员</label>
-            <img src="../resources/img/shuxian.png" />
-            <img src="../resources/img/cancel.png" /><a	href="<c:url value="/user/logout" />">注销登录</a>
-		</div>
-        
+		</c:if>
+		
 	</div>
 </body>
 </html>

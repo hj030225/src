@@ -50,6 +50,7 @@ public class JurisdictionServiceImpl implements JurisdictionService {
 	@Override
 	public int insertSysUser(SysUser user)
 	{
+	
 		return jurisdictionDAO.insertSysUser(user);
 	}
 

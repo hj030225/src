@@ -18,7 +18,7 @@
 	<center>
 		<jsp:include page="/WEB-INF/views/layout/head.jsp" />
 			<div class="bottom">
-				<jsp:include page="/WEB-INF/views/layout/left.jsp" />
+			<!-- <jsp:include page="/WEB-INF/views/layout/left.jsp" /> -->	
 				<div class="main">
 				<div class="gz">
 					<select name="department">	

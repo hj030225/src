@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,8 +57,11 @@ public class CustomerController {
 	
 	//查询所有客户
 	@RequestMapping(value="customerManage" )
-	public ModelAndView customerManage(Model model, HttpServletRequest request)
-	{
+	public ModelAndView customerManage(Model model, HttpServletRequest request,HttpSession session,String mark)
+	{  
+		if(mark!=null){
+		 session.setAttribute("mark", mark);
+		}
 		String beginIndex = request.getParameter("pager.offset");
 		int pagerNum = Integer.parseInt(request.getServletContext()
 				.getInitParameter("pagerNum"));
@@ -68,7 +72,7 @@ public class CustomerController {
 			model.addAttribute("customers", customer);
 			model.addAttribute("count", count);
 			model.addAttribute("allcustomers", "allcustomers");
-		return new ModelAndView("user/customerManage");
+		return new ModelAndView("user/customerManage");//customerManage
 	}
 	
 	//按条件查询客户
@@ -82,12 +86,11 @@ public class CustomerController {
 				.getInitParameter("pagerNum"));
 		int count = customerService.getSearchNum(status);
 		List<Customer> customer = customerService.searchcustomer(beginIndex, pagerNum,status);
-			System.out.println("查询客户条数="+count);
 			model.addAttribute("customers", customer);
 			model.addAttribute("count", count);
 			model.addAttribute("status", status);
 			model.addAttribute("searchcustomers", "searchcustomers");
-			return new ModelAndView("user/customermanage");
+			return new ModelAndView("user/customerManage");
 	}
 	
 	

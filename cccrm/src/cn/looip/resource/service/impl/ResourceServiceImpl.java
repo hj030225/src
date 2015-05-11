@@ -88,10 +88,14 @@ public class ResourceServiceImpl implements ResourceService
 
 	// 查询程序员
 	@Override
-	public List<Programmer> getprogrammers()
+	public List<Programmer> getprogrammers(String pagerIndex,int pagerNum)
 	{
-		// TODO Auto-generated method stub
-		return resourceDAO.getprogrammers();
+		int Index = 0;
+		if (pagerIndex != null)
+		{
+			Index = Integer.parseInt(pagerIndex);// 将字符串转换为int型（整型）
+		}
+		return resourceDAO.getprogrammers(Index,pagerNum);
 	}
 
 	// 按条件查询程序员
@@ -112,6 +116,11 @@ public class ResourceServiceImpl implements ResourceService
 	public int updateProgrammer(Programmer programmer)
 	{
 		return resourceDAO.updateProgrammer(programmer);
+	}
+
+	@Override
+	public int count() {
+		return resourceDAO.count();
 	}
 
 }

@@ -71,7 +71,8 @@ public class UserController
 			}
 			HttpSession session = request.getSession(); 
 			session.setAttribute("loginUser", user);
-			return new ModelAndView("redirect:../resource/resourceManage");
+			//return new ModelAndView("redirect:../resource/resourceManage");
+			return new ModelAndView("redirect:../project/projectManage");
 		}
 		else
 		{

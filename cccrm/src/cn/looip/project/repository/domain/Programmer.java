@@ -17,7 +17,7 @@ public class Programmer implements Serializable{
 	private String qq;//QQ账号
 	private short level;//等级
 	private short programmerStatus;//状态
-    
+	private String position;//职位描述
 	/**
 	 * 程序员与项目多对多关联
 	 */
@@ -89,6 +89,14 @@ public class Programmer implements Serializable{
 		Projects = projects;
 	}
 
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+    
 	
     
 }
